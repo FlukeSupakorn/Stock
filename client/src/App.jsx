@@ -29,41 +29,38 @@ function App() {
     <>
       <BrowserRouter>
       <Routes>
+        {/* <Route path="/" element={<ProductControlPanelPage />} /> */}
         <Route path="/" element={<Home />} errorElement={<ErrorPage />} />
 
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        {/* <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} /> */}
 
-        <Route path="/admin">
+        {/* <Route path="/admin">
           <Route index element={<AdminLogin />} />
           <Route path="register" element={<AdminRegister />} />
-        </Route>
+        </Route> */}
         
 
-        <Route path="/products" element={<Products />} />
+        {/* <Route path="/products" element={<Products />} />
         <Route path="/products/:productId" element={<ProductDetails />} /> 
-        <Route path="/checkout" element={<Checkout />} />
+        <Route path="/checkout" element={<Checkout />} /> */}
 
         {/* User Pages */}
-        <Route path="/wishlist" element={<WishlistPage />} />
-        <Route path="/cart" element={<Cart />} />
+        {/* <Route path="/wishlist" element={<WishlistPage />} />
+        <Route path="/cart" element={<Cart />} /> */}
 
         {/* User Dashboard */}
-        <Route path="/user">
+        {/* <Route path="/user">
           <Route index element={<UserProfilePage />} />
           <Route path="address" element={<UserAddressPage />} />
           <Route path="payoption" element={<UserPayOptionPage />} />
           <Route path="orders" element={<UserOrder />} />  
-        </Route>
+        </Route> */}
 
-        <Route path="/vendor">
+        {/* <Route path="/vendor">
           <Route path="products" element={<ProductControlPanelPage />} />
           <Route path="orders" element={<OrderControlPanelPage />} />
-          {/* <Route index element={<UserProfilePage />} />
-          <Route path="address" element={<UserAddressPage />} />
-          <Route path="payoption" element={<UserPayOptionPage />} />
-          <Route path="orders" element={<UserOrder />} />   */}
-        </Route>
+        </Route> */}
       </Routes>
     </BrowserRouter>
     </>

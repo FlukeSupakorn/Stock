@@ -7,8 +7,15 @@ function HomePage() {
 
   return (
     <div>
-      HomePage
-      {userId}
+      <a className="btn text-xl text-primary" href="/">
+            Dairy Order
+      </a>
+      <a className="btn text-xl text-primary" href="/">
+            Stock Management
+      </a>
+      {/* <a className="btn btn-ghost text-xl text-primary" href="/">
+            GadgetHouse
+      </a> */}
     </div>
   );
 }
