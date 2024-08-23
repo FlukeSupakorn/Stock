@@ -6,11 +6,11 @@ export default function Layout({children}) {
   return (
     <div className='font-noto'>
       <div className="flex min-h-screen flex-col">
-      <Header />
-      <main className="flex-grow p-4 mt-20">
+      {/* <Header /> */}
+      <main className="flex-grow">
         {children}
       </main>
-      <Footer />
+      {/* <Footer /> */}
       </div>
     </div>
   )

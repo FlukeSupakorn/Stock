@@ -22,6 +22,8 @@ import Register from './pages/Auth/Register';
 import Login from './pages/Auth/Login';
 import AdminLogin from './pages/Auth/AdminLogin';
 import AdminRegister from './pages/Auth/AdminRegister';
+import DairyOrder from './pages/StockManagement/DairyOrder';
+import StockManagement from './pages/StockManagement/StockManagement';
 
 function App() {
 
@@ -32,6 +34,8 @@ function App() {
         {/* <Route path="/" element={<ProductControlPanelPage />} /> */}
         <Route path="/" element={<Home />} errorElement={<ErrorPage />} />
 
+        <Route path="/order" element={<DairyOrder />} />
+        <Route path="/management" element={<StockManagement />} />
         {/* <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} /> */}
 
