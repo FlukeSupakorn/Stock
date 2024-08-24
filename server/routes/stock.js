@@ -16,13 +16,10 @@ router.get('/see', (req, res) => {
 
 router.post('/upload', (req, res) => {
   const data = req.body.data;
+  const newStock = req.body.newStock;
 
   console.log('Parsed data:', data);
-
-  // Use the exact keys from the CSV headers
-  const dates = data.map((row) => row['Date']);
-
-  console.log('Dates:', dates);
+  console.log('New stock:', newStock);
 
   // Process and save data to the database
   data.forEach((row) => {
@@ -47,7 +44,51 @@ router.post('/upload', (req, res) => {
     });
   });
 
+  // Add new stock data to the stock table
+  if (newStock) {
+    const newStockQuery = `
+      INSERT INTO stock (
+        date, type, เส้น, หน่วย_1, หมูชาชู, หน่วย_2, หมูทงคัตสึ, หน่วย_3, หมู, หน่วย_4, ไก่คาราเกะ, หน่วย_5, ปลา, หน่วย_6, เกี๊ยวซ่า, หน่วย_7, นักเก็ตไก่, หน่วย_8, เฟรนซ์ฟรายส์, หน่วย_9, ปูอัด, หน่วย_10, note
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+
+    const newStockValues = [
+      newStock.date, 
+      newStock.type, 
+      newStock['เส้น'] || 0, 
+      newStock['หน่วย_1'], 
+      newStock['หมูชาชู'] || 0,
+      newStock['หน่วย_2'], 
+      newStock['หมูทงคัตสึ'] || 0,
+      newStock['หน่วย_3'], 
+      newStock['หมู'] || 0,
+      newStock['หน่วย_4'], 
+      newStock['ไก่คาราเกะ'] || 0, 
+      newStock['หน่วย_5'], 
+      newStock['ปลา'] || 0, 
+      newStock['หน่วย_6'], 
+      newStock['เกี๊ยวซ่า'] || 0,
+      newStock['หน่วย_7'], 
+      newStock['นักเก็ตไก่'] || 0, 
+      newStock['หน่วย_8'], 
+      newStock['เฟรนซ์ฟรายส์'] || 0, 
+      newStock['หน่วย_9'], 
+      newStock['ปูอัด'] || 0, 
+      newStock['หน่วย_10'], 
+      newStock.note || ''
+    ];
+
+    connection.query(newStockQuery, newStockValues, (err) => {
+      if (err) {
+        console.error('Error saving new stock data:', err);
+        return res.status(500).send('Error saving new stock data');
+      }
+      console.log('New stock data saved successfully');
+    });
+  }
+
   res.send('Data processed and saved to database');
 });
+
 
 module.exports = router;
