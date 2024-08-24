@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Layout from "../../components/Layout/Layout";
 import axios from "axios";
 import Papa from 'papaparse';
+import * as XLSX from 'xlsx';
 
 function DairyOrder() {
   //Order Management
@@ -192,12 +193,18 @@ function DairyOrder() {
       .catch(error => console.error("Error fetching stock data:", error));
   }, []);
   
+  const handleExport = () => {
+    const worksheet = XLSX.utils.json_to_sheet(stock);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Current Stock");
+    XLSX.writeFile(workbook, "current_stock.xlsx");
+  };
   
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-gray-100 p-6">
       <h1 className="text-3xl font-semibold mb-6 text-gray-800">Dairy Order</h1>
       <form onSubmit={handleUpload} className="flex flex-col space-y-4 bg-white p-6 rounded-lg shadow-md w-full max-w-md">
-        <label className="text-gray-600 mb-2">Upload CSV</label>
+        <label className="text-gray-600 mb-2 text-xl font-semibold">Upload CSV</label>
         <input
           type="file"
           accept=".csv"
@@ -230,64 +237,74 @@ function DairyOrder() {
           </div>
         </div>  
       </div>
-      <div className="mt-6 w-full max-w-6xl bg-white rounded-lg shadow-md p-4 overflow-x-auto">
-        <h2 className="text-2xl font-semibold p-4 border-b border-gray-300">Current Stock</h2>
-        <table className="w-full min-w-max border-collapse text-sm">
-          <thead>
-            <tr className="bg-gray-200 text-gray-700">
-              <th className="border p-2">Date</th>
-              <th className="border p-2">เส้น</th>
-              <th className="border p-2">หน่วย_1</th>
-              <th className="border p-2">หมูชาชู</th>
-              <th className="border p-2">หน่วย_2</th>
-              <th className="border p-2">หมูทงคัตสึ</th>
-              <th className="border p-2">หน่วย_3</th>
-              <th className="border p-2">หมู</th>
-              <th className="border p-2">หน่วย_4</th>
-              <th className="border p-2">ไก่คาราเกะ</th>
-              <th className="border p-2">หน่วย_5</th>
-              <th className="border p-2">ปลา</th>
-              <th className="border p-2">หน่วย_6</th>
-              <th className="border p-2">เกี๊ยวซ่า</th>
-              <th className="border p-2">หน่วย_7</th>
-              <th className="border p-2">นักเก็ตไก่</th>
-              <th className="border p-2">หน่วย_8</th>
-              <th className="border p-2">เฟรนซ์ฟรายส์</th>
-              <th className="border p-2">หน่วย_9</th>
-              <th className="border p-2">ปูอัด</th>
-              <th className="border p-2">หน่วย_10</th>
-              <th className="border p-2">note</th>
-            </tr>
-          </thead>
-          <tbody>
-            {currentItems.map((item, index) => (
-              <tr key={index} className={index % 2 === 0 ? "bg-gray-50" : "bg-white"}>
-                <td className="border p-2">{item.date}</td>
-                <td className="border p-2">{item["เส้น"]}</td>
-                <td className="border p-2">{item["หน่วย_1"]}</td>
-                <td className="border p-2">{item["หมูชาชู"]}</td>
-                <td className="border p-2">{item["หน่วย_2"]}</td>
-                <td className="border p-2">{item["หมูทงคัตสึ"]}</td>
-                <td className="border p-2">{item["หน่วย_3"]}</td>
-                <td className="border p-2">{item["หมู"]}</td>
-                <td className="border p-2">{item["หน่วย_4"]}</td>
-                <td className="border p-2">{item["ไก่คาราเกะ"]}</td>
-                <td className="border p-2">{item["หน่วย_5"]}</td>
-                <td className="border p-2">{item["ปลา"]}</td>
-                <td className="border p-2">{item["หน่วย_6"]}</td>
-                <td className="border p-2">{item["เกี๊ยวซ่า"]}</td>
-                <td className="border p-2">{item["หน่วย_7"]}</td>
-                <td className="border p-2">{item["นักเก็ตไก่"]}</td>
-                <td className="border p-2">{item["หน่วย_8"]}</td>
-                <td className="border p-2">{item["เฟรนซ์ฟรายส์"]}</td>
-                <td className="border p-2">{item["หน่วย_9"]}</td>
-                <td className="border p-2">{item["ปูอัด"]}</td>
-                <td className="border p-2">{item["หน่วย_10"]}</td>
-                <td className="border p-2">{item["note"]}</td>
+      <div className="mt-6 w-full max-w-6xl bg-white rounded-lg shadow-md p-4">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-2xl font-semibold">Current Stock</h2>
+          <button
+            onClick={handleExport} // Add onClick handler for exporting
+            className="btn px-4 py-2 text-white bg-green-600 rounded-md hover:bg-green-700 transition-colors"
+          >
+            Export to XLSX
+          </button>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-max border-collapse text-sm">
+            <thead>
+              <tr className="bg-gray-200 text-gray-700">
+                <th className="border p-2">Date</th>
+                <th className="border p-2">เส้น</th>
+                <th className="border p-2">หน่วย_1</th>
+                <th className="border p-2">หมูชาชู</th>
+                <th className="border p-2">หน่วย_2</th>
+                <th className="border p-2">หมูทงคัตสึ</th>
+                <th className="border p-2">หน่วย_3</th>
+                <th className="border p-2">หมู</th>
+                <th className="border p-2">หน่วย_4</th>
+                <th className="border p-2">ไก่คาราเกะ</th>
+                <th className="border p-2">หน่วย_5</th>
+                <th className="border p-2">ปลา</th>
+                <th className="border p-2">หน่วย_6</th>
+                <th className="border p-2">เกี๊ยวซ่า</th>
+                <th className="border p-2">หน่วย_7</th>
+                <th className="border p-2">นักเก็ตไก่</th>
+                <th className="border p-2">หน่วย_8</th>
+                <th className="border p-2">เฟรนซ์ฟรายส์</th>
+                <th className="border p-2">หน่วย_9</th>
+                <th className="border p-2">ปูอัด</th>
+                <th className="border p-2">หน่วย_10</th>
+                <th className="border p-2">note</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {currentItems.map((item, index) => (
+                <tr key={index} className={index % 2 === 0 ? "bg-gray-50" : "bg-white"}>
+                  <td className="border p-2">{item.date}</td>
+                  <td className="border p-2">{item["เส้น"]}</td>
+                  <td className="border p-2">{item["หน่วย_1"]}</td>
+                  <td className="border p-2">{item["หมูชาชู"]}</td>
+                  <td className="border p-2">{item["หน่วย_2"]}</td>
+                  <td className="border p-2">{item["หมูทงคัตสึ"]}</td>
+                  <td className="border p-2">{item["หน่วย_3"]}</td>
+                  <td className="border p-2">{item["หมู"]}</td>
+                  <td className="border p-2">{item["หน่วย_4"]}</td>
+                  <td className="border p-2">{item["ไก่คาราเกะ"]}</td>
+                  <td className="border p-2">{item["หน่วย_5"]}</td>
+                  <td className="border p-2">{item["ปลา"]}</td>
+                  <td className="border p-2">{item["หน่วย_6"]}</td>
+                  <td className="border p-2">{item["เกี๊ยวซ่า"]}</td>
+                  <td className="border p-2">{item["หน่วย_7"]}</td>
+                  <td className="border p-2">{item["นักเก็ตไก่"]}</td>
+                  <td className="border p-2">{item["หน่วย_8"]}</td>
+                  <td className="border p-2">{item["เฟรนซ์ฟรายส์"]}</td>
+                  <td className="border p-2">{item["หน่วย_9"]}</td>
+                  <td className="border p-2">{item["ปูอัด"]}</td>
+                  <td className="border p-2">{item["หน่วย_10"]}</td>
+                  <td className="border p-2">{item["note"]}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
         <div className="mt-4 flex justify-between items-center">
           <button
             onClick={() => setCurrentPage(currentPage - 1)}
@@ -313,7 +330,7 @@ function DairyOrder() {
             className="btn px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 transition-colors"
           >
             Next
-          </button> 
+          </button>
         </div>
       </div>
     </div>
