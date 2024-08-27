@@ -14,12 +14,31 @@ router.get('/see', (req, res) => {
   });
 });
 
+router.get('/see/totalprice', (req, res) => {
+  const pricequery = 'SELECT * FROM totalprice';
+
+  connection.query(pricequery, (err, results) => {
+    if (err) {
+      console.error('Error fetching data:', err);
+      return res.status(500).send('Server error');
+    }
+    res.json(results);
+  });
+});
+
 router.post('/upload', (req, res) => {
   const data = req.body.data;
   const newStock = req.body.newStock;
+  const totalNet = req.body.totalNet;
+  const totalNetSuanmak = req.body.totalNetSuanmak;
+  const totalNetPhuttha = req.body.totalNetPhuttha;
 
   console.log('Parsed data:', data);
   console.log('New stock:', newStock);
+
+  console.log('Total net:', totalNet);
+  console.log('Total net suanmak:', totalNetSuanmak);
+  console.log('Total net phuttha:', totalNetPhuttha);
 
   // Process and save data to the database
   data.forEach((row) => {
@@ -84,6 +103,26 @@ router.post('/upload', (req, res) => {
         return res.status(500).send('Error saving new stock data');
       }
       console.log('New stock data saved successfully');
+    });
+  }
+
+  if (totalNet) {
+    const newtotalprice = `
+      INSERT INTO totalprice (
+        date, totalNetSuanmak, totalNetPhuttha, totalNet
+      ) VALUES (?, ?, ?, ?)
+    `;
+
+    const newTotalPriceValues = [
+      newStock.date, totalNetSuanmak, totalNetPhuttha, totalNet
+    ];
+
+    connection.query(newtotalprice, newTotalPriceValues, (err) => {
+      if (err) {
+        console.error('Error saving new stock data:', err);
+        return res.status(500).send('Error saving new stock data');
+      }
+      console.log('New total price data saved successfully');
     });
   }
 

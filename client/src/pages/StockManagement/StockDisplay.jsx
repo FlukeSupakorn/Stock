@@ -1,9 +1,35 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import * as XLSX from "xlsx";
+import { fetchTotalSalesData } from "../../API/fetchStock";
 
-function StockDisplay({ stock, totalNetSales, totalNetSalesSuanmak, totalNetSalesPhuttha }) {
+function StockDisplay({ stock }) {
   const [currentPage, setCurrentPage] = useState(1);
+  const [totalNetSales, setTotalNetSales] = useState(0);
+  const [totalNetSalesSuanmak, setTotalNetSalesSuanmak] = useState(0);
+  const [totalNetSalesPhuttha, setTotalNetSalesPhuttha] = useState(0);
+
   const rowsPerPage = 10;
+
+  const fetchAndLogLatestTotalNet = async () => {
+    try {
+      const data = await fetchTotalSalesData();
+      if (data.length > 0) {
+        const latestEntry = data[data.length - 1];
+        setTotalNetSales(latestEntry.totalNet);
+        setTotalNetSalesSuanmak(latestEntry.totalNetSuanmak);
+        setTotalNetSalesPhuttha(latestEntry.totalNetPhuttha);
+        console.log("Latest Entry:", latestEntry.totalNetPhuttha);
+        console.log("Latest Entry:", latestEntry.totalNetSuanmak);
+        console.log("Latest Entry:", latestEntry.totalNet);
+      } else {
+        console.log("No data available.");
+      }
+    } catch (error) {
+      console.error("Error fetching total sales data:", error);
+    }
+  };
+  
+  fetchAndLogLatestTotalNet();
 
   const handleExport = () => {
     const worksheet = XLSX.utils.json_to_sheet(stock);
@@ -27,7 +53,7 @@ function StockDisplay({ stock, totalNetSales, totalNetSalesSuanmak, totalNetSale
   return (
     <>
       <div className="mt-6 w-full max-w-6xl bg-white rounded-lg shadow-md p-4">
-        <h2 className="text-2xl font-semibold p-4 border-b border-gray-300">Total Net Sales</h2>
+        <h2 className="text-2xl font-semibold p-4 border-b border-gray-300">Lastest Date Total Net Sales</h2>
         <div className="flex flex-col">
           <div className="flex mt-2 items-center justify-between mb-2">
             <p className="text-lg ml-10 font-bold text-gray-800" style={{ flex: 1 }}>สวนหมาก:</p>

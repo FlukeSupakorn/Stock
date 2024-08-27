@@ -107,14 +107,14 @@ function OrderUpload({ updateStock }) {
             const formattedDate = `${now.getMonth() + 1}/${now.getDate()}/${now.getFullYear().toString().slice(-2)} ${now.getHours() % 12 || 12}:${now.getMinutes().toString().padStart(2, '0')} ${now.getHours() >= 12 ? 'PM' : 'AM'}`;
             newStock.date = formattedDate;
 
-            return axios.post('http://localhost:3333/admin/stock/upload', { data: data, newStock: newStock });
+            return axios.post('http://localhost:3333/admin/stock/upload', { data: data, newStock: newStock, totalNet, totalNetSuanmak, totalNetPhuttha });
           })
           .then(() => {
             alert("New stock data uploaded successfully");
             return axios.get('http://localhost:3333/admin/stock/see');
           })
           .then(response => {
-            updateStock(response.data, totalNet, totalNetSuanmak, totalNetPhuttha);
+            updateStock(response.data);
           })
           .catch((error) => {
             console.error("Error processing data:", error);
