@@ -1,4 +1,3 @@
-// src/pages/StockItem.jsx
 import React from "react";
 
 function StockItem({ item, onEdit, onRemove }) {

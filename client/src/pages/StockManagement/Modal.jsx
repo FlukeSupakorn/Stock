@@ -5,7 +5,6 @@ const Modal = ({ isOpen, onClose, items }) => {
   if (!isOpen) return null;
 
   const handleSave = () => {
-    // Implement save logic here
     console.log("Save button clicked");
     onClose();
   };

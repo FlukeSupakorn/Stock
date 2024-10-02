@@ -1,19 +1,18 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import Layout from "../../components/Layout/Layout";
 import { Link } from "react-router-dom";
-import Modal from "./Modal"; // Import the Modal component
+import Modal from "./Modal";
 
 const StockManagement = () => {
   const [latestStock, setLatestStock] = useState(null);
   const [isDropdownOpen, setDropdownOpen] = useState(false);
-  const [isModalOpen, setModalOpen] = useState(false); // State for modal visibility
+  const [isModalOpen, setModalOpen] = useState(false); 
 
   useEffect(() => {
     axios.get('http://localhost:3333/admin/stock/see')
       .then(response => {
         const stockData = response.data;
-        setLatestStock(stockData[stockData.length - 1]); // Assuming the latest stock is the last in the array
+        setLatestStock(stockData[stockData.length - 1]); 
       })
       .catch(error => console.error("Error fetching stock data:", error));
   }, []);
@@ -22,20 +21,18 @@ const StockManagement = () => {
     return <div className="text-gray-600">Loading...</div>;
   }
 
-  // Extract items
   const items = Object.keys(latestStock).filter(key => !key.startsWith('หน่วย_') && key !== 'date' && key !== 'manageid' && key !== 'type' && key !== 'note');
 
   const handleEditItem = () => {
-    setModalOpen(true); // Open the modal
+    setModalOpen(true); 
   };
 
   const handleCloseModal = () => {
-    setModalOpen(false); // Close the modal
+    setModalOpen(false); 
   };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 py-8 px-6">
-      {/* Dropdown Button */}
       <div className="absolute top-4 right-4">
         <button
           onClick={() => setDropdownOpen(!isDropdownOpen)}
@@ -58,7 +55,6 @@ const StockManagement = () => {
 
       <h1 className="text-3xl font-semibold mb-8 text-gray-800">Stock Management</h1>
 
-      {/* Container for all items */}
       <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200 w-full max-w-2xl">
         <div className="flex justify-between items-center mb-4">
           <span className="text-gray-800 text-2xl font-semibold">Current Stock</span>
@@ -87,7 +83,6 @@ const StockManagement = () => {
                   type="text"
                   value={latestStock[item]}
                   onChange={(e) => {
-                    // Update the stock value in the state
                     setLatestStock(prevState => ({
                       ...prevState,
                       [item]: e.target.value
@@ -103,18 +98,15 @@ const StockManagement = () => {
         )}
       </div>
 
-      {/* Modal */}
       <Modal 
         isOpen={isModalOpen} 
         onClose={handleCloseModal} 
-        items={items} // Pass only item names
+        items={items}
       />
     </div>
   );
 };
 
 export default () => (
-  <Layout>
     <StockManagement />
-  </Layout>
 );

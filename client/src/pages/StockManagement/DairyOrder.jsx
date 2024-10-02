@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
-import Layout from "../../components/Layout/Layout";
 import axios from "axios";
 import OrderUpload from "./OrderUpload";
 import StockDisplay from "./StockDisplay";
-import { Link } from "react-router-dom"; // Import Link for navigation
+import { Link } from "react-router-dom";
 
 function DairyOrder() {
   const [stock, setStock] = useState([]);
@@ -27,7 +26,6 @@ function DairyOrder() {
 
   return (
     <div className="flex flex-col items-center justify-start h-screen bg-gray-100 p-6 relative">
-      {/* Dropdown Button */}
       <div className="absolute top-4 right-4">
         <button
           onClick={() => setDropdownOpen(!isDropdownOpen)}
@@ -61,8 +59,6 @@ function DairyOrder() {
 }
 
 export default () => (
-  <Layout>
     <DairyOrder />
-  </Layout>
 );
 

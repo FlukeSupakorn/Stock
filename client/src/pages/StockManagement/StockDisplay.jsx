@@ -42,12 +42,10 @@ function StockDisplay({ stock }) {
     setCurrentPage(pageNumber);
   };
 
-  // Calculate the stock data for the current page
   const indexOfLastRow = currentPage * rowsPerPage;
   const indexOfFirstRow = indexOfLastRow - rowsPerPage;
   const currentRows = stock.slice(indexOfFirstRow, indexOfLastRow);
 
-  // Total number of pages
   const totalPages = Math.ceil(stock.length / rowsPerPage);
 
   return (
