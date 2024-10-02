@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const connection = require('../db'); // Import your MySQL connection
+const connection = require('../db');
 
 router.get('/see', (req, res) => {
   const query = 'SELECT * FROM stock';
@@ -40,7 +40,6 @@ router.post('/upload', (req, res) => {
   console.log('Total net suanmak:', totalNetSuanmak);
   console.log('Total net phuttha:', totalNetPhuttha);
 
-  // Process and save data to the database
   data.forEach((row) => {
     const query = `
       INSERT INTO receipts (
@@ -63,7 +62,6 @@ router.post('/upload', (req, res) => {
     });
   });
 
-  // Add new stock data to the stock table
   if (newStock) {
     const newStockQuery = `
       INSERT INTO stock (
